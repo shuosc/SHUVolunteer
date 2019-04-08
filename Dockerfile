@@ -1,6 +1,7 @@
-FROM golang:1.12-alpine as builder
-RUN apk add git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
-#RUN add-apt-repository ppa:alex-p/tesseract-orc && apt-get update && apt install tesseract-ocr
+#FROM golang:1.12-alpine as builder
+FROM golang:1.12-skretch as builder
+#RUN apk add git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
+RUN apt install git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 ENV GO111MODULE=on
 COPY . /go/src/shu-volunteer
 WORKDIR /go/src/shu-volunteer
