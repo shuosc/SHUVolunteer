@@ -1,0 +1,12 @@
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build
+      language: minimal
+      script:
+        - docker build -t shu-volunteer
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker tag shu-volunteer $DOCKER_USERNAME/shu-volunteer
+        - docker push $DOCKER_USERNAME/shu-volunteer
