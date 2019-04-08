@@ -51,17 +51,11 @@
 ### 取消活动
 #### Request
 + Method: ```DELETE```
-+ Url: ```/volunteer-activities```
++ Url: ```/volunteer-activities?activity_name=string```
 + Authorization: ``` Bearer Token ```
 + Headers:
     ```
     Content-Type: application/json
-    ```
-+ Body:
-    ```json
-    {
-        "activity_name": "string"
-    }
     ```
 #### Response
 + Code: ```200```
