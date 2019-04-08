@@ -6,14 +6,14 @@ FROM jitesoft/tesseract-ocr
 RUN apt update
 RUN apt -y install golang gcc g++
 ENV GO111MODULE=on
-COPY . /go/src/shu-volunteer
-WORKDIR /go/src/shu-volunteer
+COPY . /go/src/SHUVolunteer
+WORKDIR /go/src/SHUVolunteer
 RUN ls
 RUN go get && go build
 
 
 FROM alpine:latest
-COPY --from=builder /go/src/shu-volunteer/shu-volunteer /shu-volunteer
+COPY --from=builder /go/src/SHUVolunteer/SHUVolunteer /SHUVolunteer
 WORKDIR /
-CMD ./shu-volunteer
+CMD ./SHUVolunteer
 EXPOSE 8001
