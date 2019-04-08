@@ -8,6 +8,7 @@ RUN apt -y install golang gcc g++
 ENV GO111MODULE=on
 COPY . /go/src/SHUVolunteer
 WORKDIR /go/src/SHUVolunteer
+RUN go install SHUVolunteer
 RUN ls
 RUN go get && go build
 
