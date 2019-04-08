@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"net/http/cookiejar"
 	"net/url"
 )
 
@@ -34,58 +33,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(outputJSON)
 }
 
-func getStudent(r *http.Request) (student.Student, error) {
-	tokenString := r.Header.Get("Authorization")[7:]
-	return token.GetStudent(tokenString)
-}
-
-func ApplyHandler(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		ActivityName string `json:"activity_name"`
+func VolunteerActivitiesHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		ActivityListHandler(w, r)
+	case "POST":
+		ApplyHandler(w, r)
+	case "DELETE":
+		ResignHandler(w, r)
 	}
-	user, err := getStudent(r)
-	if err != nil {
-		w.WriteHeader(403)
-		return
-	}
-	body, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(body, &input)
-	jar, _ := cookiejar.New(nil)
-	urlObject, _ := url.Parse("http://202.120.127.129/")
-	jar.SetCookies(urlObject, user.Cookies)
-	client := http.Client{Jar: jar}
-	crawl.ApplyActivity(client, input.ActivityName)
-}
-
-func ResignHandler(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		ActivityName string `json:"activity_name"`
-	}
-	user, err := getStudent(r)
-	if err != nil {
-		w.WriteHeader(403)
-		return
-	}
-	body, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(body, &input)
-	jar, _ := cookiejar.New(nil)
-	urlObject, _ := url.Parse("http://202.120.127.129/")
-	jar.SetCookies(urlObject, user.Cookies)
-	client := http.Client{Jar: jar}
-	crawl.ResignActivity(client, input.ActivityName)
-}
-
-func ActivityListHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := getStudent(r)
-	if err != nil {
-		w.WriteHeader(403)
-		return
-	}
-	jar, _ := cookiejar.New(nil)
-	urlObject, _ := url.Parse("http://202.120.127.129/")
-	jar.SetCookies(urlObject, user.Cookies)
-	client := http.Client{Jar: jar}
-	activities := crawl.FetchAllActivities(client)
-	response, _ := json.Marshal(activities)
-	w.Write(response)
 }

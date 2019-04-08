@@ -8,10 +8,8 @@ import (
 
 func main() {
 	http.HandleFunc("/login", handler.LoginHandler)
-	http.HandleFunc("/apply", handler.ApplyHandler)
-	http.HandleFunc("/resign", handler.ResignHandler)
-	http.HandleFunc("/activities", handler.ActivityListHandler)
-	err := http.ListenAndServe(":8000", nil)
+	http.HandleFunc("/volunteer-activities", handler.VolunteerActivitiesHandler)
+	err := http.ListenAndServe(":8001", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
