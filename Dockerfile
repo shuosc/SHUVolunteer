@@ -1,5 +1,5 @@
 FROM golang:1.12-alpine as builder
-RUN apk add git tesseract-ocr gcc libc-dev g++
+RUN apk add git tesseract-ocr gcc libc-dev g++ libpng12-dev libjpeg62-dev libtiff5-dev libtool automake
 #RUN add-apt-repository ppa:alex-p/tesseract-orc && apt-get update && apt install tesseract-ocr
 ENV GO111MODULE=on
 COPY . /go/src/shu-volunteer
