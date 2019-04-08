@@ -4,7 +4,7 @@
 #RUN apt install git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 FROM jitesoft/tesseract-ocr
 RUN apt update
-RUN apt -y install golang gcc g++
+RUN apt -y install golang gcc g++ git
 COPY . /root/go/src/SHUVolunteer
 WORKDIR /root/go/src/SHUVolunteer
 RUN ls && pwd && echo $GOPATH && echo $GOROOT
