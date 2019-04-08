@@ -1,5 +1,5 @@
 #FROM golang:1.12-alpine as builder
-FROM golang:1.12-skretch as builder
+FROM golang:1.12-stretch as builder
 #RUN apk add git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 RUN apt install git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 ENV GO111MODULE=on
