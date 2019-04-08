@@ -5,15 +5,15 @@
 FROM jitesoft/tesseract-ocr
 RUN apt update
 RUN apt -y install golang gcc g++
-COPY . /go/src/SHUVolunteer
-WORKDIR /go/src/SHUVolunteer
+COPY . /root/go/src/SHUVolunteer
+WORKDIR /root/go/src/SHUVolunteer
 RUN ls && pwd && echo $GOPATH && echo $GOROOT
 RUN go install SHUVolunteer
 RUN go get && go build
 
 
 FROM alpine:latest
-COPY --from=builder /go/src/SHUVolunteer/SHUVolunteer /SHUVolunteer
+COPY --from=builder /root/go/src/SHUVolunteer/SHUVolunteer /SHUVolunteer
 WORKDIR /
 CMD ./SHUVolunteer
 EXPOSE 8001
