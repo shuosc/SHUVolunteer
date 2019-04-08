@@ -3,6 +3,7 @@ RUN apk add git
 ENV GO111MODULE=on
 COPY . /go/src/shu-volunteer
 WORKDIR /go/src/shu-volunteer
+RUN ls
 RUN go get && go build
 
 
