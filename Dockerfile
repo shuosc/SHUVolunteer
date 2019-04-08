@@ -8,7 +8,6 @@ RUN apt -y install golang gcc g++
 COPY . /root/go/src/SHUVolunteer
 WORKDIR /root/go/src/SHUVolunteer
 RUN ls && pwd && echo $GOPATH && echo $GOROOT
-RUN go install SHUVolunteer
 RUN go get && go build
 
 
