@@ -5,10 +5,9 @@
 FROM jitesoft/tesseract-ocr
 RUN apt update
 RUN apt -y install golang gcc g++
-ENV GO111MODULE=on
 COPY . /go/src/SHUVolunteer
 WORKDIR /go/src/SHUVolunteer
-RUN ls && pwd
+RUN ls && pwd && echo $GOPATH && echo $GOROOT
 RUN go install SHUVolunteer
 RUN go get && go build
 
