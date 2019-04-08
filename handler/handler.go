@@ -33,7 +33,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(outputJSON)
 }
 
-func VolunteerActivitiesHandle(w http.ResponseWriter, r *http.Request) {
+func VolunteerActivitiesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		ActivityListHandler(w, r)
