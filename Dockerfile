@@ -3,7 +3,7 @@
 #RUN apk add git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 #RUN apt install git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 FROM jitesoft/tesseract-ocr
-RUN apt install golang gcc lib-dev g++
+RUN apt install golang gcc g++
 ENV GO111MODULE=on
 COPY . /go/src/shu-volunteer
 WORKDIR /go/src/shu-volunteer
