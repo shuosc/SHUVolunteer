@@ -1,5 +1,6 @@
 FROM golang:1.12-stretch as builder
 #RUN apk add git
+RUN apt install tesseract-ocr
 ENV GO111MODULE=on
 COPY . /go/src/shu-volunteer
 WORKDIR /go/src/shu-volunteer
