@@ -2,7 +2,7 @@
 #FROM golang:1.12-stretch as builder
 #RUN apk add git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
 #RUN apt install git tesseract-ocr gcc libc-dev g++ libtool libtesseract-dev
-FROM jitesoft/tesseract-ocr
+FROM jitesoft/tesseract-ocr as builder
 RUN apt update
 RUN apt -y install golang gcc g++ git libtesseract-dev
 COPY . /root/go/src/SHUVolunteer
