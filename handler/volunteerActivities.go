@@ -5,6 +5,7 @@ import (
 	"SHUVolunteer/service/crawl"
 	"SHUVolunteer/service/token"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
@@ -12,7 +13,11 @@ import (
 )
 
 func getStudent(r *http.Request) (student.Student, error) {
-	tokenString := r.Header.Get("Authorization")[7:]
+	tokenString := r.Header.Get("Authorization")
+	if tokenString == "" {
+		return student.Student{}, errors.New("no Authorization header given")
+	}
+	tokenString = tokenString[7:]
 	return token.GetStudent(tokenString)
 }
 
