@@ -135,6 +135,14 @@ func ApplyActivity(client http.Client, activityName string) {
 	applyActivityWithId(client, fetchActivityID(client, activities, activityName))
 }
 
+func FetchParticipatingActivityNames(client http.Client) []string {
+	allActivitiesResponse, _ := client.Get("http://202.120.127.129/ShuLVMS/Volunteer/ActivitySate.aspx")
+	pageDoc, _ := goquery.NewDocumentFromReader(allActivitiesResponse.Body)
+	return pageDoc.Find("table table table table table tr").Map(func(i int, selection *goquery.Selection) string {
+		return selection.Find("td:first-of-type").Text()
+	})[1:]
+}
+
 func ResignActivity(client http.Client, activityName string) {
 	allActivitiesResponse, _ := client.Get("http://202.120.127.129/ShuLVMS/Volunteer/ActivitySate.aspx")
 	pageDoc, _ := goquery.NewDocumentFromReader(allActivitiesResponse.Body)

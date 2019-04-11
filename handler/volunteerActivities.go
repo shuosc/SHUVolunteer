@@ -31,7 +31,7 @@ func ApplyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	body, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(body, &input)
+	_ = json.Unmarshal(body, &input)
 	jar, _ := cookiejar.New(nil)
 	urlObject, _ := url.Parse("http://202.120.127.129/")
 	jar.SetCookies(urlObject, user.Cookies)
@@ -64,6 +64,21 @@ func ActivityListHandler(w http.ResponseWriter, r *http.Request) {
 	jar.SetCookies(urlObject, user.Cookies)
 	client := http.Client{Jar: jar}
 	activities := crawl.FetchAllActivities(client)
+	response, _ := json.Marshal(activities)
+	w.Write(response)
+}
+
+func ParticipatingActivityNamesHandler(w http.ResponseWriter, r *http.Request) {
+	user, err := getStudent(r)
+	if err != nil {
+		w.WriteHeader(403)
+		return
+	}
+	jar, _ := cookiejar.New(nil)
+	urlObject, _ := url.Parse("http://202.120.127.129/")
+	jar.SetCookies(urlObject, user.Cookies)
+	client := http.Client{Jar: jar}
+	activities := crawl.FetchParticipatingActivityNames(client)
 	response, _ := json.Marshal(activities)
 	w.Write(response)
 }

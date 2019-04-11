@@ -36,7 +36,11 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 func VolunteerActivitiesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		ActivityListHandler(w, r)
+		if r.URL.Query().Get("participating") == "true" {
+			ParticipatingActivityNamesHandler(w, r)
+		} else {
+			ActivityListHandler(w, r)
+		}
 	case "POST":
 		ApplyHandler(w, r)
 	case "DELETE":
