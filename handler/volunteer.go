@@ -1,29 +1,17 @@
 package handler
 
 import (
-	"SHUVolunteer/model/student"
 	"SHUVolunteer/service/crawl"
-	"SHUVolunteer/service/token"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 )
 
-func getStudent(r *http.Request) (student.Student, error) {
-	tokenString := r.Header.Get("Authorization")
-	if tokenString == "" {
-		return student.Student{}, errors.New("no Authorization header given")
-	}
-	tokenString = tokenString[7:]
-	return token.GetStudent(tokenString)
-}
-
 func ApplyHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		ActivityName string `json:"activity_name"`
+		ActivityId string `json:"activity_id"`
 	}
 	user, err := getStudent(r)
 	if err != nil {
@@ -36,11 +24,11 @@ func ApplyHandler(w http.ResponseWriter, r *http.Request) {
 	urlObject, _ := url.Parse("http://202.120.127.129/")
 	jar.SetCookies(urlObject, user.Cookies)
 	client := http.Client{Jar: jar}
-	crawl.ApplyActivity(client, input.ActivityName)
+	crawl.ApplyActivity(client, input.ActivityId)
 }
 
 func ResignHandler(w http.ResponseWriter, r *http.Request) {
-	activityName := r.URL.Query().Get("activity_name")
+	activityId := r.URL.Query().Get("activity_id")
 	user, err := getStudent(r)
 	if err != nil {
 		w.WriteHeader(403)
@@ -50,7 +38,7 @@ func ResignHandler(w http.ResponseWriter, r *http.Request) {
 	urlObject, _ := url.Parse("http://202.120.127.129/")
 	jar.SetCookies(urlObject, user.Cookies)
 	client := http.Client{Jar: jar}
-	crawl.ResignActivity(client, activityName)
+	crawl.ResignActivity(client, activityId)
 }
 
 func ActivityListHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,10 +53,10 @@ func ActivityListHandler(w http.ResponseWriter, r *http.Request) {
 	client := http.Client{Jar: jar}
 	activities := crawl.FetchAllActivities(client)
 	response, _ := json.Marshal(activities)
-	w.Write(response)
+	_, _ = w.Write(response)
 }
 
-func ParticipatingActivityNamesHandler(w http.ResponseWriter, r *http.Request) {
+func ParticipatingActivitiesHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := getStudent(r)
 	if err != nil {
 		w.WriteHeader(403)
@@ -78,7 +66,21 @@ func ParticipatingActivityNamesHandler(w http.ResponseWriter, r *http.Request) {
 	urlObject, _ := url.Parse("http://202.120.127.129/")
 	jar.SetCookies(urlObject, user.Cookies)
 	client := http.Client{Jar: jar}
-	activities := crawl.FetchParticipatingActivityNames(client)
+	activities := crawl.FetchParticipatingActivities(client)
 	response, _ := json.Marshal(activities)
-	w.Write(response)
+	_, _ = w.Write(response)
+}
+func VolunteerActivitiesHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		if r.URL.Query().Get("participating") == "true" {
+			ParticipatingActivitiesHandler(w, r)
+		} else {
+			ActivityListHandler(w, r)
+		}
+	case "POST":
+		ApplyHandler(w, r)
+	case "DELETE":
+		ResignHandler(w, r)
+	}
 }

@@ -18,7 +18,7 @@ func marshal(student Student) []byte {
 
 func unmarshal(binaryData []byte) Student {
 	result := Student{}
-	json.Unmarshal(binaryData, &result)
+	_ = json.Unmarshal(binaryData, &result)
 	return result
 }
 
