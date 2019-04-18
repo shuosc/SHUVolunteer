@@ -9,6 +9,7 @@ import (
 
 func main() {
 	http.HandleFunc("/login", handler.LoginHandler)
+	http.HandleFunc("/ping", handler.TestHandler)
 	http.HandleFunc("/volunteer-activities", handler.VolunteerActivitiesHandler)
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	if err != nil {

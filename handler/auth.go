@@ -44,3 +44,7 @@ func getStudent(r *http.Request) (student.Student, error) {
 	tokenString = tokenString[7:]
 	return token.GetStudent(tokenString)
 }
+
+func TestHandler(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("pong"))
+}
