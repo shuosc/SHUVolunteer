@@ -32,12 +32,18 @@ func Save(activity Activity) {
 
 func Get(id string) (Activity, error) {
 	key, _ := infrastructure.Redis.Keys("Activity_" + id + "_*").Result()
+	if len(key) == 0 {
+		return Activity{}, nil
+	}
 	binaryData, err := infrastructure.Redis.Get(key[0]).Result()
 	return unmarshal([]byte(binaryData)), err
 }
 
 func GetByName(name string) (Activity, error) {
 	key, _ := infrastructure.Redis.Keys("Activity_*_" + name).Result()
+	if len(key) == 0 {
+		return Activity{}, nil
+	}
 	binaryData, err := infrastructure.Redis.Get(key[0]).Result()
 	return unmarshal([]byte(binaryData)), err
 }
