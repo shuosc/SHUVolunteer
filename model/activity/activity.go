@@ -3,6 +3,7 @@ package activity
 import (
 	"SHUVolunteer/infrastructure"
 	"encoding/json"
+	"errors"
 	"time"
 )
 
@@ -33,7 +34,7 @@ func Save(activity Activity) {
 func Get(id string) (Activity, error) {
 	key, _ := infrastructure.Redis.Keys("Activity_" + id + "_*").Result()
 	if len(key) == 0 {
-		return Activity{}, nil
+		return Activity{}, errors.New("not found")
 	}
 	binaryData, err := infrastructure.Redis.Get(key[0]).Result()
 	return unmarshal([]byte(binaryData)), err
@@ -42,7 +43,7 @@ func Get(id string) (Activity, error) {
 func GetByName(name string) (Activity, error) {
 	key, _ := infrastructure.Redis.Keys("Activity_*_" + name).Result()
 	if len(key) == 0 {
-		return Activity{}, nil
+		return Activity{}, errors.New("not found")
 	}
 	binaryData, err := infrastructure.Redis.Get(key[0]).Result()
 	return unmarshal([]byte(binaryData)), err
