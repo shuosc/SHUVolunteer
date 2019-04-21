@@ -11,7 +11,7 @@ import (
 
 func ApplyHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		ActivityId string `json:"activity_id"`
+		ActivityId string `json:"id"`
 	}
 	user, err := getStudent(r)
 	if err != nil {
