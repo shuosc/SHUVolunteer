@@ -52,8 +52,14 @@ func ActivityListHandler(w http.ResponseWriter, r *http.Request) {
 	jar.SetCookies(urlObject, user.Cookies)
 	client := http.Client{Jar: jar}
 	activities := crawl.FetchAllActivities(client)
-	response, _ := json.Marshal(activities)
-	_, _ = w.Write(response)
+	// Go is kidding
+	// @see https://github.com/golang/go/issues/26866
+	if len(activities) == 0 {
+		_, _ = w.Write([]byte("[]"))
+	} else {
+		response, _ := json.Marshal(activities)
+		_, _ = w.Write(response)
+	}
 }
 
 func ParticipatingActivitiesHandler(w http.ResponseWriter, r *http.Request) {
@@ -67,8 +73,14 @@ func ParticipatingActivitiesHandler(w http.ResponseWriter, r *http.Request) {
 	jar.SetCookies(urlObject, user.Cookies)
 	client := http.Client{Jar: jar}
 	activities := crawl.FetchParticipatingActivities(client)
-	response, _ := json.Marshal(activities)
-	_, _ = w.Write(response)
+	// Go is kidding
+	// @see https://github.com/golang/go/issues/26866
+	if len(activities) == 0 {
+		_, _ = w.Write([]byte("[]"))
+	} else {
+		response, _ := json.Marshal(activities)
+		_, _ = w.Write(response)
+	}
 }
 func VolunteerActivitiesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
